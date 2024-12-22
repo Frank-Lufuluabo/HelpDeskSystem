@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using eStore;
+using HelpDeskSystem;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HelpDeskSystem.Areas.Identity.Pages.Account
