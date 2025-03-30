@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using HelpDeskSystem.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -17,13 +18,13 @@ namespace HelpDeskSystem.Areas.Identity.Pages.Account.Manage
 {
     public class EmailModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
 
         public EmailModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -73,7 +74,7 @@ namespace HelpDeskSystem.Areas.Identity.Pages.Account.Manage
             public string NewEmail { get; set; }
         }
 
-        private async Task LoadAsync(IdentityUser user)
+        private async Task LoadAsync(ApplicationUser user)
         {
             var email = await _userManager.GetEmailAsync(user);
             Email = email;
@@ -121,7 +122,7 @@ namespace HelpDeskSystem.Areas.Identity.Pages.Account.Manage
                 var callbackUrl = Url.Page(
                     "/Account/ConfirmEmailChange",
                     pageHandler: null,
-                    values: new { area = "Identity", userId, email = Input.NewEmail, code },
+                    values: new { area = "Identity", userId = userId, email = Input.NewEmail, code = code },
                     protocol: Request.Scheme);
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
@@ -157,7 +158,7 @@ namespace HelpDeskSystem.Areas.Identity.Pages.Account.Manage
             var callbackUrl = Url.Page(
                 "/Account/ConfirmEmail",
                 pageHandler: null,
-                values: new { area = "Identity", userId, code },
+                values: new { area = "Identity", userId = userId, code = code },
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,

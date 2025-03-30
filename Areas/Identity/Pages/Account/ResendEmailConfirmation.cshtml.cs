@@ -2,10 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using HelpDeskSystem.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +20,10 @@ namespace HelpDeskSystem.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ResendEmailConfirmationModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
 
-        public ResendEmailConfirmationModel(UserManager<IdentityUser> userManager, IEmailSender emailSender)
+        public ResendEmailConfirmationModel(UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;
@@ -72,7 +75,7 @@ namespace HelpDeskSystem.Areas.Identity.Pages.Account
             var callbackUrl = Url.Page(
                 "/Account/ConfirmEmail",
                 pageHandler: null,
-                values: new { userId, code },
+                values: new { userId = userId, code = code },
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 Input.Email,
