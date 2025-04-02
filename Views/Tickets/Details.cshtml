@@ -9,70 +9,79 @@
 <div>
     <h4>Ticket</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <td class="col-sm-10">
+                    @Html.DisplayFor(model => model.Title)
+                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <td class="col-sm-10">
+                    @Html.DisplayFor(model => model.Description)
+                </td>
+            </tr>
+
+        </table>
+       
+        
+
+
+        <div class="col-sm-2">
             @Html.DisplayNameFor(model => model.StatusId)
-        </dt>
-        <dd class = "col-sm-10">
+        </div>
+        <div class="col-sm-10">
             @Html.DisplayFor(model => model.StatusId)
-        </dd>
-        <dt class = "col-sm-2">
+        </div>
+        <div class="col-sm-2">
             @Html.DisplayNameFor(model => model.PriorityId)
-        </dt>
-        <dd class = "col-sm-10">
+        </div>
+        <div class="col-sm-10">
             @Html.DisplayFor(model => model.PriorityId)
-        </dd>
-        <dt class = "col-sm-2">
+        </div>
+        <div class="col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-        <dd class = "col-sm-10">
+        </div>
+        <div class="col-sm-10">
             @Html.DisplayFor(model => model.CreatedBy.Id)
-        </dd>
-        <dt class = "col-sm-2">
+        </div>
+        <div class="col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedOn)
-        </dt>
-        <dd class = "col-sm-10">
+        </div>
+        <div class="col-sm-10">
             @Html.DisplayFor(model => model.CreatedOn)
-        </dd>
-        <dt class = "col-sm-2">
+        </div>
+        <div class="col-sm-2">
             @Html.DisplayNameFor(model => model.SubCategoryId)
-        </dt>
-        <dd class = "col-sm-10">
+        </div>
+        <div class="col-sm-10">
             @Html.DisplayFor(model => model.SubCategoryId)
-        </dd>
-        <dt class = "col-sm-2">
+        </div>
+        <div class="col-sm-2">
             @Html.DisplayNameFor(model => model.Attachment)
-        </dt>
-        <dd class = "col-sm-10">
+        </div>
+        <div class="col-sm-10">
             @Html.DisplayFor(model => model.Attachment)
-        </dd>
-        <dt class = "col-sm-2">
+        </div>
+        <div class="col-sm-2">
             @Html.DisplayNameFor(model => model.AssignedTo)
-        </dt>
-        <dd class = "col-sm-10">
+        </div>
+        <div class="col-sm-10">
             @Html.DisplayFor(model => model.AssignedTo.Id)
-        </dd>
-        <dt class = "col-sm-2">
+        </div>
+        <div class="col-sm-2">
             @Html.DisplayNameFor(model => model.AssignedOn)
-        </dt>
-        <dd class = "col-sm-10">
+        </div>
+        <div class="col-sm-10">
             @Html.DisplayFor(model => model.AssignedOn)
-        </dd>
-    </dl>
+        </div>
+    </div>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a class="btn btn-primary" asp-action="Index">Back to List</a>
 </div>
