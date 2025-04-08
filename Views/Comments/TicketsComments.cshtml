@@ -47,7 +47,7 @@
                     @Html.DisplayFor(modelItem => item.CreatedBy.FullName)
                 </td>
                 <td>
-                    <a class="btn btn-secondary" asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id">Comments</a> |
+                    <a class="btn btn-secondary" asp-action="Details" asp-controller="Comments" asp-route-id="@item.Id">Comments</a> |
                 </td>
                 <td>
                     <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Details</a> |
