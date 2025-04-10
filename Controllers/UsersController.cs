@@ -1,9 +1,9 @@
 ﻿using HelpDeskSystem.Data;
 using HelpDeskSystem.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Drawing.Text;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace HelpDeskSystem.Controllers
 {
@@ -14,16 +14,23 @@ namespace HelpDeskSystem.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _context;
 
+        public string ClaimType { get; private set; }
+
         public UsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
            RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager) 
         {
+            _roleManager = roleManager;
+            _signInManager = signInManager;
+            _userManager = userManager;
+            _context = context;
 
         }
 
         // GET: UsersController
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            var users = await _context.Users.ToListAsync();
+            return View(users);
         }
 
         // GET: UsersController/Details/5
@@ -41,13 +48,37 @@ namespace HelpDeskSystem.Controllers
         // POST: UsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> CreateAsync(ApplicationUser user)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                ApplicationUser registereduser = new();
+                registereduser.FirstName = user.FirstName;
+                registereduser.UserName = user.UserName;
+                registereduser.MiddleName = user.MiddleName;
+                registereduser.LastName = user.LastName;
+                registereduser.NormalizedUserName = user.UserName;
+                registereduser.Email = user.Email;
+                registereduser.EmailConfirmed = true;
+                registereduser.City = user.City;
+                registereduser.Country = user.Country;
+                registereduser.PhoneNumber = user.PhoneNumber;
+
+                var result = await _userManager.CreateAsync(registereduser, user.PasswordHash);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View();
+                }
+
+
             }
-            catch
+            catch(Exception ex) 
             {
                 return View();
             }
