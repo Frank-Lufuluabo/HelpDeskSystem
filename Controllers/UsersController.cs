@@ -17,7 +17,7 @@ namespace HelpDeskSystem.Controllers
         public string ClaimType { get; private set; }
 
         public UsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
-           RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager) 
+           RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
         {
             _roleManager = roleManager;
             _signInManager = signInManager;
@@ -69,6 +69,20 @@ namespace HelpDeskSystem.Controllers
                 var result = await _userManager.CreateAsync(registereduser, user.PasswordHash);
                 if (result.Succeeded)
                 {
+                    //Log the Audit Trail 
+                    var activity = new AuditTrail
+                    {
+                        Action = "Create",
+                        TimeStamp = DateTime.Now,
+                        IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                        UserId = userId,
+                        Module = "Users",
+                        AffectedTable = "Users"
+                    };
+
+                    _context.Add(activity);
+                    await _context.SaveChangesAsync();
+
                     return RedirectToAction("Index");
                 }
                 else
@@ -78,7 +92,7 @@ namespace HelpDeskSystem.Controllers
 
 
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 return View();
             }

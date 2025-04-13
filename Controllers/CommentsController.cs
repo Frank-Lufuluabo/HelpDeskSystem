@@ -26,7 +26,7 @@ namespace HelpDeskSystem.Controllers
 
         public async Task<IActionResult> TicketsComments(int Id)
         {
-            var comments = await _context.Comments.Where(x=>x. TicketId==Id)
+            var comments = await _context.Comments.Where(x => x.TicketId == Id)
                 .Include(c => c.CreatedBy)
                 .Include(c => c.Ticket).ToListAsync();
             return View(comments);
@@ -72,9 +72,24 @@ namespace HelpDeskSystem.Controllers
             comment.CreatedOn = DateTime.Now;
             comment.CreatedById = userId;
             _context.Add(comment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            
+            await _context.SaveChangesAsync();
+
+            //Log the Audit Trail 
+            var activity = new AuditTrail
+            {
+                Action = "Create",
+                TimeStamp = DateTime.Now,
+                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                UserId = userId,
+                Module = "Comments",
+                AffectedTable = "Comments"
+            };
+
+            _context.Add(activity);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+
             ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "FullName", comment.CreatedById);
             ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Title", comment.TicketId);
             return View(comment);
