@@ -1,8 +1,216 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<HelpDeskSystem.Models.Ticket>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@{
+    ViewData["Title"] = "Help Desk Dashboard";
+}
+<div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2 row-cols-xxl-4">
+    <div class="col">
+        <div class="card overflow-hidden rounded-4">
+            <div class="card-body p-2">
+                <div class="d-flex align-items-stretch justify-content-between  rounded-4 overflow-hidden bg-pink">
+                    <div class="w-50 p-3">
+                        <p class="text-white">Total Tickets</p>
+                        <h4 class="text-white"></h4>
+                    </div>
+                    <div class="w-50 p-3">
+                        <p class="mb-3 text-white text-end"> <i class="bi bi-arrow-up"></i></p>
+                        <div id="chart1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card overflow-hidden  rounded-4">
+            <div class="card-body p-2">
+                <div class="d-flex align-items-stretch justify-content-between rounded-4 overflow-hidden bg-purple">
+                    <div class="w-50 p-3">
+                        <p class="text-white">Assigned Tickets</p>
+                        <h4 class="text-white"></h4>
+                    </div>
+                    <div class="w-50  p-3">
+                        <p class="mb-3 text-white text-end"><i class="bi bi-arrow-down"></i></p>
+                        <div id="chart2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card overflow-hidden rounded-4">
+            <div class="card-body p-2">
+                <div class="d-flex align-items-stretch justify-content-between rounded-4 overflow-hidden bg-success">
+                    <div class="w-50 p-3">
+                        <p class="text-white">Closed Tickets</p>
+                        <h4 class="text-white"></h4>
+                    </div>
+                    <div class="w-50 p-3">
+                        <p class="mb-3 text-white text-end"><i class="bi bi-arrow-up"></i></p>
+                        <div id="chart3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card overflow-hidden rounded-4">
+            <div class="card-body p-2">
+                <div class="d-flex align-items-stretch justify-content-between rounded-4 overflow-hidden bg-orange">
+                    <div class="w-50 p-3">
+                        <p class="text-white">Resolved Tickets</p>
+                        <h4 class="text-white"></h4>
+                    </div>
+                    <div class="w-50 p-3">
+                        <p class="mb-3 text-white text-end"> <i class="bi bi-arrow-up"></i></p>
+                        <div id="chart4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!--end row-->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="container1"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="container2"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="container5"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="container6"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="container3"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="container4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card rounded-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <h6 class="mb-0">Recent Tickets</h6>
+        </div>
+        <div class="table-responsive mt-2">
+            <table class="table table-bordered table-responsive table-hover table-responsive-lg ">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Title)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StatusId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PriorityId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreatedBy.FullName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreatedOn)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SubCategoryId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Attachment)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AssignedTo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AssignedOn)
+                        </th>
+                        <th>View</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StatusId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PriorityId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedBy.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedOn)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SubCategoryId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Attachment)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AssignedTo.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AssignedOn)
+                            </td>
+                            <td>
+                                <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
