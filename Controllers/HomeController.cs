@@ -20,12 +20,21 @@ namespace HelpDeskSystem.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var tickets = await _context.Tickets
-              .Include(t => t.CreatedBy)
-              .OrderBy(x => x.CreatedOn)
-              .ToListAsync();
+            if (!User.Identity.IsAuthenticated)
+            {
 
-            return View(tickets);
+                return this.Redirect("~/identity/account/login");
+            }
+            else
+            {
+
+                var tickets = await _context.Tickets
+               .Include(t => t.CreatedBy)
+               .OrderBy(x => x.CreatedOn)
+               .ToListAsync();
+
+                return View(tickets);
+            }
         }
 
         public IActionResult Privacy()
