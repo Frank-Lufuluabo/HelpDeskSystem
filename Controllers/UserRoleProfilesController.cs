@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HelpDeskSystem.Data;
@@ -116,9 +112,6 @@ namespace HelpDeskSystem.Controllers
                 TempData["ERROR"] = "There was an issue assigning rights to the  Role " + ex.Message;
             }
 
-
-
-
             var allroles = await _context.Roles.OrderBy(x => x.Name).ToListAsync();
 
             ViewBag.RoleId = new SelectList(allroles, "Id", "Name", vm.RoleId);
@@ -142,7 +135,6 @@ namespace HelpDeskSystem.Controllers
             ViewData["TaskId"] = new SelectList(_context.SystemTasks, "Id", "Name");
             return View();
         }
-
 
         [Permission("USERPROFILE:CREATE")]
         [HttpPost]
