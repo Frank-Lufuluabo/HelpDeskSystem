@@ -84,7 +84,6 @@ namespace HelpDeskSystem.Controllers
            }).ToListAsync();
 
             return _exportService.ExportToExcel(data, "RecentTicketsList");
-
         }
 
 
@@ -150,7 +149,6 @@ namespace HelpDeskSystem.Controllers
             }).ToListAsync();
 
             return _exportService.ExportToExcel(data, "AssignedTicketsList");
-
         }
 
 
@@ -216,9 +214,7 @@ namespace HelpDeskSystem.Controllers
             }).ToListAsync();
 
             return _exportService.ExportToExcel(data, "ClosedTicketsList");
-
         }
-
 
 
         [Permission("TICKETS:VIEW")]
@@ -283,9 +279,7 @@ namespace HelpDeskSystem.Controllers
             }).ToListAsync();
 
             return _exportService.ExportToExcel(data, "ResolvedTicketsList");
-
         }
-
 
 
         [Permission("COMMENTS:VIEW")]
@@ -317,7 +311,6 @@ namespace HelpDeskSystem.Controllers
                 CreatedBy = x.CreatedBy.FullName,
                 CreatedOn = x.CreatedOn
             }).ToListAsync();
-
 
             return _exportService.ExportToExcel(comments, "TicketsCommentsList");
             
