@@ -23,6 +23,15 @@ namespace HelpDeskSystem
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
 
+            .AddCookie(options =>
+             {
+                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                 options.SlidingExpiration = true;
+                 options.Cookie.Name = ".HelpDesk.Session";
+                 options.Cookie.HttpOnly = true;
+                 options.Cookie.IsEssential = true;
+             });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
