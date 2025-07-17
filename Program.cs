@@ -1,3 +1,4 @@
+using HelpDeskSystem.ClaimsManagement;
 using HelpDeskSystem.Data;
 using HelpDeskSystem.Models;
 using Microsoft.AspNetCore.Identity;
@@ -32,6 +33,20 @@ namespace HelpDeskSystem
                  options.Cookie.IsEssential = true;
              });
 
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.LoginPath = "/Identity/Account/Login";
+            });
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Permission", policyBuilder =>
+                {
+                    policyBuilder.Requirements.Add(new PermissionAuthorizationRequirement());
+                });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -62,3 +77,6 @@ namespace HelpDeskSystem
         }
     }
 }
+
+
+
