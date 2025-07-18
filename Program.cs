@@ -1,6 +1,9 @@
+using AutoMapper;
 using HelpDeskSystem.ClaimsManagement;
 using HelpDeskSystem.Data;
 using HelpDeskSystem.Models;
+using HelpDeskSystem.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,6 +49,23 @@ namespace HelpDeskSystem
                     policyBuilder.Requirements.Add(new PermissionAuthorizationRequirement());
                 });
             });
+
+            builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
+            var config = new MapperConfiguration(
+                cfg =>
+                {
+                    if (cfg != null)
+                    {
+                        cfg.SourceMemberNamingConvention = new PascalCaseNamingConvention();
+                        cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
+                        cfg.AllowNullDestinationValues = true;
+                        cfg.AddProfile(new AutomapperProfileService());
+                    }
+                });
+
+            var mapper = config.CreateMapper();
+            builder.Services.AddSingleton(mapper);
 
             var app = builder.Build();
 
