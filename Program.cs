@@ -27,6 +27,16 @@ namespace HelpDeskSystem
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
 
+            builder.Services.AddDistributedMemoryCache();
+
+            builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, MyUserClaimsPrincipalFactory>()
+            .AddAuthentication(options =>
+            {
+            options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+            options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+            options.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
+            })
+
             .AddCookie(options =>
              {
                  options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
@@ -66,6 +76,21 @@ namespace HelpDeskSystem
 
             var mapper = config.CreateMapper();
             builder.Services.AddSingleton(mapper);
+
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+            });
+
+            builder.Services.AddCors(option => option.AddPolicy("AllowAllOrigins", builder =>
+            {
+                builder
+                .AllowAnyOrigin()
+                 .AllowAnyMethod()
+                  .AllowAnyHeader();
+
+            }));
 
             var app = builder.Build();
 
