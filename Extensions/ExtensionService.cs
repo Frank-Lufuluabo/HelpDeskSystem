@@ -5,7 +5,6 @@ namespace HelpDeskSystem.Extensions
 {
     public interface IExtensionService
     {
-
         string GeneratePassword(int maxSize);
     }
 
@@ -13,7 +12,6 @@ namespace HelpDeskSystem.Extensions
     {
         public ExtensionService()
         {
-            
         }
 
         public string GeneratePassword(int maxSize)
